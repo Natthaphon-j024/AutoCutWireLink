@@ -1,6 +1,10 @@
 #ifndef HelpGoble
 #define HelpGoble
 
+#define InButtonlift A0
+#define InButtonright A1
+#define InButtonOK A2
+#define InButtonCancls A3
 
 char *ModeMainName[] = {"Standby","Start" , "Setting"};
 /*  
@@ -21,8 +25,9 @@ int Angle = 0;
 int StepNum;
 String ModeID = "Standby";
 int SubModeSettingID = 0;
+int OloLengthData = 20; 
 
-String SetCut = "9999.0";
+String SetCut = "001.0";
 String Count = "0";
 
 
