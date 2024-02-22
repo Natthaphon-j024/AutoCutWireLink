@@ -48,7 +48,10 @@ void Buttomtest(){
         break;
     }
 }
-int BtSumNum(int RawNum , int MaxValue){
+
+
+int BtSumNum(int RawNum , int MaxValue)// value olo RawNum of value is at update and    MaxValue is Value remit Value at ajust
+{
 
 if (ButtonUP == true && RawNum < MaxValue)
 {

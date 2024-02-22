@@ -22,7 +22,7 @@ int StepNum;
 String ModeID = "Standby";
 int SubModeSettingID = 0;
 
-String SetCut = "000.000";
+String SetCut = "9999.0";
 String Count = "0";
 
 
