@@ -26,10 +26,12 @@ int StepNum;
 String ModeID = "Standby";
 int SubModeSettingID = 0;
 int OloLengthData = 20; 
-
-String SetCut = "001.0";
-String Count = "0";
-
+long int sumCut;
+long int PWMCut;
+float PWMStapping;
+String SetCut = "00.01";
+String Count = "1";
+int stackCount= 0;
 
 
 

@@ -47,9 +47,9 @@ void LCD_ShowStartRun(String temp)
   lcd.setCursor((21 - temp.length()) / 2, 0);                     // กำหนดตำแหน่งเคอร์เซอร์ที่ แถวที่ 0 บรรทัดที่ 0
   lcd.print(String(temp));                                        // พิมพ์ข้อความ
   lcd.setCursor(3, 1);                                            // กำหนดตำแหน่งเคอร์เซอร์ที่ แถวที่ 2 บรรทัดที่ 1
-  lcd.print("Length:" + String(000.000) + " m.");                 // พิมพ์ข้อความ "arduinoall.com"
+  lcd.print("Length:" + String(00.00) + " m.");                 // พิมพ์ข้อความ "arduinoall.com"
   lcd.setCursor(6, 2);                                            // กำหนดตำแหน่งเคอร์เซอร์ที่ แถวที่ 0 บรรทัดที่ 0
-  lcd.print("Cut:" + String(SetCut.toFloat() / 100, 2) + " m.");  // พิมพ์ข้อความ
+  lcd.print("Cut:" + String(SetCut.toFloat(), 2) + " m.");  // พิมพ์ข้อความ
   lcd.setCursor(4, 3);                                            // กำหนดตำแหน่งเคอร์เซอร์ที่ แถวที่ 2 บรรทัดที่ 1
   lcd.print("Count:" + String(Count) + "|" + String(00) + " w."); // พิมพ์ข้อความ "arduinoall.com"
   delayMicroseconds(1000);
@@ -63,20 +63,20 @@ void LCD_ShowRun(String TempLength, String TempMode)
     lcd.setCursor((21 - TempMode.length()) / 2, 0); // กำหนดตำแหน่งเคอร์เซอร์ที่ แถวที่ 0 บรรทัดที่ 0
     lcd.print(String(TempMode));                    // พิมพ์ข้อความ
     lcd.setCursor(3, 1);                            // กำหนดตำแหน่งเคอร์เซอร์ที่ แถวที่ 2 บรรทัดที่ 1
-    lcd.print("Length:" + String(TempLength.toFloat()/100));
+    lcd.print("Length:" + String(TempLength));
     lcd.setCursor(15, 1);
     lcd.print(" m.");                                               // พิมพ์ข้อความ "arduinoall.com"
     lcd.setCursor(6, 2);                                            // กำหนดตำแหน่งเคอร์เซอร์ที่ แถวที่ 0 บรรทัดที่ 0
-    lcd.print("Cut:" + String(SetCut.toFloat() / 100, 2) + " m.");  // พิมพ์ข้อความ
+    lcd.print("Cut:" + String(SetCut.toFloat(),2) + " m.");  // พิมพ์ข้อความ
     lcd.setCursor(4, 3);                                            // กำหนดตำแหน่งเคอร์เซอร์ที่ แถวที่ 2 บรรทัดที่ 1
     lcd.print("Count:" + String(Count) + "|" + String(00) + " w."); // พิมพ์ข้อความ "arduinoall.com"
   OloLengthData=TempLength.length();
   }
   lcd.setCursor(3, 1); // กำหนดตำแหน่งเคอร์เซอร์ที่ แถวที่ 2 บรรทัดที่ 1
-  lcd.print("Length:" + String(TempLength.toFloat()/100));
+  lcd.print("Length:" + String(TempLength));
   lcd.setCursor(15, 1);
   lcd.print(" m.");
-  delayMicroseconds(1000);
+
 }
 void ClsLCD(int BanTunNum)
 {
