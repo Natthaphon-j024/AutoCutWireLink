@@ -18,15 +18,15 @@ void setup()
   SetupLCD();
 
   myservo.attach(9); // กำหนดขา 9 ควบคุม Servo
-  myservo.write(76);
+  myservo.write(0);
   // put your setup code here, to run once:
+  delay(2000);
+  myservo.write(67);
+  // pinMode(10, OUTPUT);
+  // pinMode(11, OUTPUT);
+  // pinMode(12, OUTPUT);
 
-  pinMode(10, OUTPUT);
-  pinMode(11, OUTPUT);
-  pinMode(12, OUTPUT);
 
-  digitalWrite(enaPin, HIGH);
-  digitalWrite(dirPin, LOW);
   Serial.println("updete V 01.50");
   LCD_ShowStartRun(ModeMainName[NumMode]);
 }
@@ -34,10 +34,10 @@ void setup()
 void loop()
 {
   // test();
-   ReadButtonInput();
+   
 
   if (ModeID == "Standby")
- {
+ {stackCount = 0;
     CallSelectMainModeID();
   }
    else if (ModeID == "Setting")
@@ -46,6 +46,7 @@ void loop()
    }
   else if (ModeID == "Start")
   {
+    Serial.println("Hello Running");
      RunningProcess();
    }
   else
@@ -60,10 +61,10 @@ void loop()
 
 void RunningProcess()
 {
-  stackCount = 0;
+  
   PWMCut = CalDataSetToPwm(SetCut.toFloat());
   while (stackCount < Count.toInt())
-  {
+  {Serial.println("while (stackCount < Count.toInt())");
     if (stackCount != Count.toInt())
     {
       myservo.write(0);
@@ -71,6 +72,8 @@ void RunningProcess()
     }
     RunMotorStepping(PWMCut);
   }
+  ModeID = "Standby";
+
 }
 void RunMotorStepping(long TempPWM)
 {
@@ -82,13 +85,20 @@ void RunMotorStepping(long TempPWM)
     Serial.println(stepper.currentPosition());
     PWMStapping = CalPWMToM(stepper.currentPosition());
     LCD_ShowRun(String(PWMStapping), "Running");
-    if (stepper.currentPosition() > TempPWM)
+    if (stepper.currentPosition() >= TempPWM)
     {
       stepper.setCurrentPosition(0);
       stepper.stop();
-      myservo.write(76);
+      for (int chop = 0; chop <=  3; ){
+      myservo.write(80);
       delay(1000);
-      stackCount += 1;
+         myservo.write(0);
+      delay(1000);
+      chop++;
+      }
+      stackCount++;
+      Serial.print("Cut : ");
+      Serial.println(stackCount);
       break;
     }
   }

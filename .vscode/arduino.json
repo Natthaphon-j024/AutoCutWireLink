@@ -1,5 +1,5 @@
 {
-    "port": "COM4",
+    "port": "COM12",
     "board": "arduino:avr:uno",
     "sketch": "ArduinoCutline\\ArduinoCutline.ino"
 }

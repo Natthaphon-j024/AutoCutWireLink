@@ -16,60 +16,65 @@ void SetupButton()
 
 void ReadButtonInput()
 {
-    if (digitalRead(InButtonlift) == false)
-    {
-        ButtonDow = true;
-    
-    }
-    else if (digitalRead(InButtonlift) == true)
-    {
-        ButtonDow = false;
-    }
-    if (digitalRead(InButtonright) == false)
-    {ButtonUP = true;
-        
-    }
-    else if (digitalRead(InButtonright) == true){
-        
-        ButtonUP = false;
-    }
-     if (digitalRead(InButtonOK) == false)
-    {
-        ButtonOK = true;
-    }
-    else if (digitalRead(InButtonOK) == true){
-        ButtonOK = false;
-    }
-       if (digitalRead(InButtonCancls) == false)
-    {
-        ButtonCancls = true;
-    }
-    else if (digitalRead(InButtonCancls) == true){
-        ButtonCancls = false;
-    }
-digitalWrite(10,ButtonUP);
-digitalWrite(11,ButtonDow);
-digitalWrite(12,ButtonOK);
-digitalWrite(13,ButtonCancls);
+//if (millis() - timebBT > settimeBT){
+    ButtonDow = !digitalRead(InButtonlift);
+    ButtonUP = !digitalRead(InButtonright);
+    ButtonOK = !digitalRead(InButtonOK);
+    ButtonCancls = !digitalRead(InButtonCancls);
+//   timebBT =millis();
+//}
+    // if (digitalRead(InButtonlift) == false)
+    // {
+    //     ButtonDow = true;
 
-Serial.println("-----------------InPut---------------------------");
-Serial.println("InButtonlift" + String(digitalRead(InButtonlift)));
-Serial.println("InButtonright" + String(digitalRead(InButtonright)));
-Serial.println("InButtonOK" + String(digitalRead(InButtonOK)));
-Serial.println("InButtonCancls" + String(digitalRead(InButtonCancls)));
-Serial.println("-----------------output---------------------------");
+    // }
+    // else if (digitalRead(InButtonlift) == true)
+    // {
+    //     ButtonDow = false;
+    // }
+    // if (digitalRead(InButtonright) == false)
+    // {ButtonUP = true;
 
+    // }
+    // else if (digitalRead(InButtonright) == true){
 
-Serial.println("ButtonUP : " + String(ButtonUP));
-Serial.println("ButtonDow : " + String(ButtonDow));
-Serial.println("ButtonOK  : " + String(ButtonOK));
-Serial.println("ButtonCancls : " + String(ButtonCancls));
+    //     ButtonUP = false;
+    // }
+    //  if (digitalRead(InButtonOK) == false)
+    // {
+    //     ButtonOK = true;
+    // }
+    // else if (digitalRead(InButtonOK) == true){
+    //     ButtonOK = false;
+    // }
+    //    if (digitalRead(InButtonCancls) == false)
+    // {
+    //     ButtonCancls = true;
+    // }
+    // else if (digitalRead(InButtonCancls) == true){
+    //     ButtonCancls = false;
+    // }
+   // digitalWrite(10, ButtonUP);
+    //digitalWrite(11, ButtonDow);
+    //digitalWrite(12, ButtonOK);
+    //digitalWrite(13, ButtonCancls);
 
-Serial.println("-----------------ModeID---------------------------");
-Serial.println("ModeID : " + String(ModeID));
+    Serial.println("-----------------InPut---------------------------");
+    Serial.println("InButtonlift" + String(digitalRead(InButtonlift)));
+    Serial.println("InButtonright" + String(digitalRead(InButtonright)));
+    Serial.println("InButtonOK" + String(digitalRead(InButtonOK)));
+    Serial.println("InButtonCancls" + String(digitalRead(InButtonCancls)));
+    Serial.println("-----------------output---------------------------");
 
-return;
+    Serial.println("ButtonUP : " + String(ButtonUP));
+    Serial.println("ButtonDow : " + String(ButtonDow));
+    Serial.println("ButtonOK  : " + String(ButtonOK));
+    Serial.println("ButtonCancls : " + String(ButtonCancls));
 
+    Serial.println("-----------------ModeID---------------------------");
+    Serial.println("ModeID : " + String(ModeID));
+
+    return;
 }
 String ReadSerial()
 {
@@ -78,13 +83,14 @@ String ReadSerial()
     return str;
 }
 
-void ReSetButton(){
+void ReSetButton()
+{
 
-ButtonUP = false;
-ButtonDow = false;
-ButtonOK = false;
-ButtonCancls = false;
-delay(200);
+    ButtonUP = false;
+    ButtonDow = false;
+    ButtonOK = false;
+    ButtonCancls = false;
+    //delay(200);
 }
 
 void Buttomtest()

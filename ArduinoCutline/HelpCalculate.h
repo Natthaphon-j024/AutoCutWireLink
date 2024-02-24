@@ -7,7 +7,7 @@ float CalDataSetToPwm(float TempNum);
 float CalDataSetToPwm( float TempSetCut)
 { Serial.print("CalDataPwm");
     Serial.println(TempSetCut);
-    float CalDataPwm = 800*((TempSetCut*100)/((3.146*2)*0.48673));
+    float CalDataPwm = 800*((TempSetCut)/((3.146*2)*0.48673));
     Serial.print("CalDataPwm");
     Serial.println(CalDataPwm);
     return(CalDataPwm); 

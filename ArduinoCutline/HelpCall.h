@@ -17,56 +17,59 @@ void test()
 
 void CallSelectMainModeID()
 {
+   ReadButtonInput();
    int OloNumMode = 0;
    NumMode = 0;
-   ReSetButton();
+
+   // ReSetButton();
    LCD_ShowStartRun(ModeMainName[NumMode]);
-   if (ModeID == "Standby"){
-   while (true)
+   if (ModeID == "Standby")
    {
-      Serial.println("ModeID: " + ModeID);
-      // test();
-      ReadButtonInput();
-      if (ButtonUP == true && NumMode <= 2)
+      while (true)
       {
-         NumMode++;
-         Serial.println("NumMode++:" + String(NumMode));
-      }
-      else if (ButtonDow == true && NumMode >= 1)
-      {
-         NumMode--;
-         Serial.println("NumMode--:" + String(NumMode));
-      }
-      // else if ((NumMode > 2 || NumMode < 0) || (ButtonDow == true || ButtonUP == true))
-      // {
-      //    NumMode = 0;
-      // }
-      Serial.println("OloNumMode:" + String(OloNumMode));
-      Serial.println("NumMode:" + String(NumMode));
-      if (OloNumMode != NumMode)
-      {
-         Serial.println("Update LCD CallSelectMainModeID");
-         if (ModeMainName[NumMode] == "Setting")
+         Serial.println("ModeID: " + ModeID);
+         // test();
+         ReadButtonInput();
+         if (ButtonUP == true && NumMode < 2)
          {
-            LCD_Setting(ModeMainName[NumMode]);
+            NumMode++;
+            Serial.println("NumMode++:" + String(NumMode));
          }
-         else if (ModeMainName[NumMode] == "Standby" || ModeMainName[NumMode] == "Start")
+         else if (ButtonDow == true && NumMode >= 1)
          {
-            LCD_ShowStartRun(ModeMainName[NumMode]);
+            NumMode--;
+            Serial.println("NumMode--:" + String(NumMode));
          }
-         OloNumMode = NumMode;
+         // else if ((NumMode > 2 || NumMode < 0) || (ButtonDow == true || ButtonUP == true))
+         // {
+         //    NumMode = 0;
+         // }
+         Serial.println("OloNumMode:" + String(OloNumMode));
+         Serial.println("NumMode:" + String(NumMode));
+         if (OloNumMode != NumMode)
+         {
+            Serial.println("Update LCD CallSelectMainModeID");
+            if (ModeMainName[NumMode] == "Setting")
+            {
+               LCD_Setting(ModeMainName[NumMode]);
+            }
+            else if (ModeMainName[NumMode] == "Standby" || ModeMainName[NumMode] == "Start")
+            {
+               LCD_ShowStartRun(ModeMainName[NumMode]);
+            }
+            OloNumMode = NumMode;
+         }
+         if (ModeID == "Standby" && ButtonOK == true)
+         {
+            Serial.println("ok Update LCD CallSelectMainModeID");
+            Serial.println(ModeMainName[NumMode]);
+            ModeID = ModeMainName[NumMode];
+            break;
+         }
+         ReSetButton();
+         delayMicroseconds(10000);
       }
-      if (ModeID == "Standby" && ButtonOK == true)
-      {
-         Serial.println("ok Update LCD CallSelectMainModeID");
-         Serial.println(ModeMainName[NumMode]);
-         ModeID = ModeMainName[NumMode];
-         break;
-      }
-      ReSetButton();
-      delayMicroseconds(10000);
    }
-}
 }
 
 void CallSettingMode()
@@ -74,79 +77,88 @@ void CallSettingMode()
    int NumSelect = 0;
    String OloSetCut = SetCut;
    String OloCount = Count;
-   int ModeIDSet = 0;
+   ModeIDSet = 0;
    int NumID[] = {10, 20, 100};
    int OloNumID = 0;
+   unsigned long timeCallSettingMode = 0;
 
+   timeCallSettingMode = millis();
    if (ModeID == "Setting")
    {
       Serial.println("=------------------Setting:------------------------------");
       LCD_Setting(ModeSetupName[NumSelect]);
+      if (ModeIDSet == 0)
+            {
       while (true)
       {
-         ReSetButton();
-         Serial.println("ModeIDSet:" + String(ModeIDSet));
-         // test(); // Print Paramiter Button input1
-         ReadButtonInput();
-         NumSelect = BtSumNum(NumSelect, 3);
-
-         Serial.println("NumSelect:" + String(NumSelect));
-         // select Setup praramiter
-         if (ModeIDSet == 0)
+    
+         if (millis() - timeCallSettingMode > 200)
          {
-            if (NumSelect != OloNumID)
-            {
-               LCD_Setting(ModeSetupName[NumSelect]);
-               OloNumID = NumSelect;
-            }
+            // ReSetButton();
+            Serial.println("ModeIDSet:" + String(ModeIDSet));
+            // test(); // Print Paramiter Button input1
+            ReadButtonInput();
+            NumSelect = BtSumNum(NumSelect, 2);
 
-            if (ButtonOK == true)
-            {
-               Serial.println("ButtonOK :" + String(ModeSetupName[NumSelect]));
-               LCD_Setting(ModeSetupName[NumSelect]);
-               ModeIDSet = NumID[NumSelect];
-            }
-            else if (ButtonCancls == true)
-            {
-               LCD_Setting("Cancls Setup");
-               while (true)
+            Serial.println("NumSelect:" + String(NumSelect));
+            // select Setup praramiter
+        
+               if (NumSelect != OloNumID)
                {
-                  if (ButtonOK == true)
-                  {
-                     SetCut = OloSetCut;
+                  LCD_Setting(ModeSetupName[NumSelect]);
+                  OloNumID = NumSelect;
+               }
 
-                     Count = OloCount;
-                     ModeID = "Standby";
-                     break;
-                  }
-                  else if (ButtonCancls == true)
+               if (ButtonOK == true)
+               {
+                  Serial.println("ButtonOK :" + String(ModeSetupName[NumSelect]));
+                  LCD_Setting(ModeSetupName[NumSelect]);
+                  ModeIDSet = NumID[NumSelect];
+                  break;
+               }
+               else if (ButtonCancls == true)
+               {
+                  LCD_Setting("Cancls Setup");
+                  while (true)
                   {
-                     break;
+                     if (ButtonOK == true)
+                     {
+                        SetCut = OloSetCut;
+                        Count = OloCount;
+                        ModeID = "Standby";
+                        break;
+                     }
+                     else if (ButtonCancls == true)
+                     {
+                        break;
+                     }
                   }
                }
+               timeCallSettingMode = millis() ;
             }
-         }
-         //-----------End Select setup-------------
+             }
+            //-----------End Select setup-------------
 
-         else if (ModeIDSet == 10)
-         {
-            CallSetupData(String(SetCut), "SetupSC");
-            ModeIDSet = 0;
+             
+             
          }
 
-         else if (ModeIDSet == 20)
-         {
-            CallSetupCount(Count, "SetupCC");
-            ModeIDSet = 0;
-         }
-         else if (ModeIDSet == 100)
-         {
-            ModeID = "Standby";
-            NumSelect = 0;
-            break;
-         }
-         delayMicroseconds(200000);
-      }
+     if (ModeIDSet == 10)
+            {
+               CallSetupData(String(SetCut), "SetupSC");
+               ModeIDSet = 0;
+            }
+
+            else if (ModeIDSet == 20)
+            {
+               CallSetupCount(Count, "SetupCC");
+               ModeIDSet = 0;
+            }
+            else if (ModeIDSet == 100)
+            {Serial.println("ModeIDSet : 1000 " );
+               ModeID = "Standby";
+               NumSelect = 0;
+            }
    }
 }
 
@@ -155,92 +167,50 @@ void CallSetupData(String Data, String TempName)
    /* setup  Value cut   */
    String Olocut = Data;
    int SumData = Data.toInt(); // Extracting the integer part of NewSetcut
-   int location = 3;
+   unsigned long timeCallSetupData = millis();
    int OloSumData;
    ReadButtonInput();
    while (true)
    {
       // Serial.println("NewSetcut :" + SumData);
       // test();
-      ReSetButton();
-      Serial.println("SumData :" + String(SumData));
-      Serial.println("location " + String(location));
-      ReadButtonInput();
-      if (ButtonUP == true)
+      if (millis() - timeCallSetupData >  200)
       {
-         if (SumData <= 9000)
+         // ReSetButton();
+         Serial.println("SumData :" + String(SumData));
+         ReadButtonInput();
+         if (ButtonUP == true)
          {
-            if (location == 0)
+            if (SumData <= 9000)
             {
-               SumData += 1000;
-            }
-            else if (location == 1)
-            {
-               SumData += 100;
-            }
-            else if (location == 2)
-            {
-               SumData += 10;
-            }
-            else if (location == 3)
-            {
+
                SumData += 1;
             }
          }
-      }
-      else if (ButtonDow == true)
-      {
-         if (location == 0 && SumData >= 1000)
+         else if (ButtonDow == true)
          {
-            SumData -= 1000;
-         }
-         else if (location == 1 && SumData >= 100)
-         {
-            SumData -= 100;
-         }
-         else if (location == 2 && SumData >= 10)
-         {
-            SumData -= 10;
-         }
-         else if (location == 3 && SumData >= 1)
-         {
-            SumData -= 1;
-         }
-      }
-      else if (ButtonOK == true)
-      {
-         switch (location)
-         {
-         case 0:
-            location -= 1;
-            break;
-         case 1:
-            location -= 1;
-            break;
-         case 2:
-            location -= 1;
-            break;
-         case 3:
-            location -= 1;
-            break;
+            if (SumData != 1)
+            {
 
-         default:
-            break;
+               SumData -= 1;
+            }
          }
-      }
-      if (OloSumData != SumData)
-      {
-         SetCut = SumData;
-         LCD_Setting(TempName);
+         if (ButtonOK == true)
+         {
+            SetCut = SumData;
+            ModeIDSet= 0;
+            break;
+            CallSettingMode();
+         }
+         if (OloSumData != SumData)
+         {
+            SetCut = SumData;
+            LCD_Setting(TempName);
 
-         // CallUpdata(String(SumData), TempName);
+            // CallUpdata(String(SumData), TempName);
+         }
+         timeCallSetupData = millis();
       }
-      if (location < 0)
-      {
-         break;
-      }
-      ReSetButton();
-      delayMicroseconds(20000);
    }
 }
 
@@ -250,40 +220,48 @@ void CallSetupCount(String Data, String TempName)
    String Olocut = Data;
    int SumDataCount = Data.toInt(); // Extracting the integer part of NewSetcut
    int OloSumDataCount;
+   unsigned long timeCallSetupCount = millis();
    Serial.println("CallSetupCount");
    while (true)
    {
-      ReSetButton();
-      Serial.println("CallSetupCount while");
-      // Serial.println("NewSetcut :" + SumData);
-      // test();
-      ReadButtonInput();
-      Serial.println("SumData :" + String(SumDataCount));
-      if (ButtonUP == true)
+      if (millis() - timeCallSetupCount > 500)
       {
-         if (SumDataCount < 99)
+         ReSetButton();
+         Serial.println("CallSetupCount while");
+         // Serial.println("NewSetcut :" + SumData);
+         // test();
+         ReadButtonInput();
+         Serial.println("SumData :" + String(SumDataCount));
+         if (ButtonUP == true)
          {
+            if (SumDataCount < 99)
+            {
 
-            SumDataCount += 1;
+               SumDataCount += 1;
+            }
          }
-      }
-      else if (ButtonDow == true)
-      {
-         if (SumDataCount > 0)
+         else if (ButtonDow == true)
          {
-            SumDataCount -= 1;
+            if (SumDataCount > 0)
+            {
+               SumDataCount -= 1;
+            }
          }
-      }
-      if (ButtonOK == true)
-      {
-         Serial.println("CallSetupCount break while ");
-         break;
-      }
-      if (OloSumDataCount != SumDataCount)
-      {
-         Count = SumDataCount;
-         LCD_Setting(TempName);
-         OloSumDataCount = SumDataCount;
+         if (ButtonOK == true)
+         {
+            Serial.println("CallSetupCount break while ");
+            ModeIDSet = 0;
+           
+            Count = SumDataCount;
+             break;
+         }
+         if (OloSumDataCount != SumDataCount)
+         {
+            Count = SumDataCount;
+            LCD_Setting(TempName);
+            OloSumDataCount = SumDataCount;
+         }
+      timeCallSetupCount = millis();
       }
    }
 }

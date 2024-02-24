@@ -32,8 +32,9 @@ float PWMStapping;
 String SetCut = "00.01";
 String Count = "1";
 int stackCount= 0;
-
-
-
+int OlostackCount;
+int ModeIDSet=0;
+unsigned long timebBT = 0;
+unsigned long settimeBT =500;
 
 #endif
